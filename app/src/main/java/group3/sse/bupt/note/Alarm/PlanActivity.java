@@ -85,7 +85,7 @@ public class PlanActivity extends AppCompatActivity implements AdapterView.OnIte
                 case R.id.bottom_bar_note:
                     Intent intent=new Intent(PlanActivity.this, MainActivity.class);
                     startActivity(intent);
-                    overridePendingTransition(0,0);
+                    overridePendingTransition(R.anim.night_switch, R.anim.night_switch_over);
                     PlanActivity.this.finish();
                     return true;
                 case R.id.bottom_bar_plan:

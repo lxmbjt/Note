@@ -112,5 +112,16 @@
         <item name="android:colorControlActivated">@color/cover</item>
         <item name="android:colorControlNormal">@color/near_white</item>
     </style>
+    <style name="AnimationFade">
+
+        <!-- PopupWindow左右弹出的效果 -->
+        <item name="android:windowEnterAnimation">@anim/in_lefttoright</item>
+        <item name="android:windowExitAnimation">@anim/out_righttoleft</item>
+    </style>
+    <style name="AnimationCover">
+        <item name="android:windowEnterAnimation">@anim/in_slow</item>
+        <item name="android:windowExitAnimation">@anim/out_slow</item>
+    </style>
+
 
 </resources>

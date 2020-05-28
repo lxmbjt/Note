@@ -48,8 +48,9 @@ public abstract class BaseActivity extends AppCompatActivity {
                 needRefresh();
             }
         };
-
+         //当夜间模式发生变化时，系统广播会发出一条NIGHT_SWITCH广播
         registerReceiver(receiver, filter);
+
     }
 
     public boolean isNightMode(){

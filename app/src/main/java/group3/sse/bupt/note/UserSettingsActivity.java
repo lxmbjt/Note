@@ -79,6 +79,7 @@ public class UserSettingsActivity extends BaseActivity {
         intent.putExtra("night_change", !night_change); //重启一次，正负颠倒。最终为正值时重启MainActivity。
 
         startActivity(intent);
+        overridePendingTransition(R.anim.night_switch, R.anim.night_switch_over);
         finish();//结束之前的设置界面
     }
 

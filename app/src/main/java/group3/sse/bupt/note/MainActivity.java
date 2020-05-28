@@ -92,7 +92,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
                 case R.id.bottom_bar_plan:
                     Intent intent=new Intent(MainActivity.this, PlanActivity.class);
                     startActivity(intent);
-                    overridePendingTransition(0,0);
+                    overridePendingTransition(R.anim.night_switch, R.anim.night_switch_over);
                     MainActivity.this.finish();
                     return true;
             }
@@ -156,9 +156,9 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
                 Intent intent = new Intent(MainActivity.this, EditActivity.class);
                 intent.putExtra("mode", 4);//新建笔记
                 startActivityForResult(intent, 1);//传回结果
+                overridePendingTransition(R.anim.in_righttoleft, R.anim.out_righttoleft);
             }
         });
-
 
     }
 
@@ -168,7 +168,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("opMode", 10);
         startActivity(intent);
-        //overridePendingTransition(R.anim.night_switch, R.anim.night_switch_over);
+        overridePendingTransition(R.anim.night_switch, R.anim.night_switch_over);
         if (popupWindow.isShowing()) popupWindow.dismiss();
         finish();
     }
@@ -191,6 +191,11 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         popupWindow = new PopupWindow(customView, (int) (width * 0.7), height, true);//把menu_layout做成弹出窗口
         popupCover = new PopupWindow(coverView, width, height, false);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.WHITE));//设置背景色为白色
+        if (isNightMode()) popupWindow.setBackgroundDrawable(new ColorDrawable(Color.LTGRAY));
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        popupWindow.setAnimationStyle(R.style.AnimationFade);
+        popupCover.setAnimationStyle(R.style.AnimationCover);
+
 
         //在主界面加载成功后，显示弹出
         findViewById(R.id.activity_main).post( new Runnable() {
@@ -230,6 +235,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
                         Intent intent = new Intent(MainActivity.this, UserSettingsActivity.class);
                         startActivityForResult(intent, 2);
 
+
                     }
                 });
                 setting_text.setOnClickListener(new View.OnClickListener() {
@@ -237,6 +243,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
                     public void onClick(View v) {
                         Intent intent = new Intent(MainActivity.this, UserSettingsActivity.class);
                         startActivityForResult(intent, 2);
+
                     }
                 });
                 //点击了coverView后关闭弹窗
@@ -257,6 +264,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
                 });
             }
         });
+
     }
 
     //接收startActivityForResult的结果
@@ -364,6 +372,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
                 intent.putExtra("mode", 3);//编辑一个已有笔记模式
                 intent.putExtra("tag", curNote.getTag());
                 startActivityForResult(intent, 1);//从编辑页面返回结果
+                overridePendingTransition(R.anim.in_righttoleft, R.anim.out_righttoleft);
                 break;
         }
 
