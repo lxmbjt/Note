@@ -120,8 +120,10 @@ public class PlanActivity extends BaseActivity implements AdapterView.OnItemClic
         myToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                PlanActivity.this.finish();
+                Intent intent=new Intent(PlanActivity.this, MainActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.night_switch, R.anim.night_switch_over);
+                finish();
 
             }
         });

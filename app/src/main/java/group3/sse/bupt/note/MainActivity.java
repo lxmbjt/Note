@@ -4,18 +4,25 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 import group3.sse.bupt.note.Alarm.PlanActivity;
 
 import android.app.Activity;
+import android.app.LocalActivityManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.media.Image;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -29,6 +36,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -80,6 +89,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
     private TextView allNote;
     private SharedPreferences sharedPreferences;
 
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -108,59 +118,67 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
             if(nightMode)setTheme(R.style.NightTheme);
             else setTheme(R.style.DayTheme);
         }
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        btn = findViewById(R.id.floatingActionButton1);
-        listView = findViewById(R.id.listView);
-        myToolbar = findViewById(R.id.myToolbar);
-        adapter = new NoteAdapter(context, noteList);
-        BottomNavigationView BottomNavigation = (BottomNavigationView) findViewById(R.id.bottomNavigation);
-        BottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("curTag", 0);
-        if(!sharedPreferences.contains("reverseMode"))
-        editor.putBoolean("reverseMode", false);
-        editor.commit();
-
-
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(this);
-        listView.setOnItemLongClickListener(ListViewLongClickListener);
-
-        myToolbar.setTitle("全部笔记");
-
-        setSupportActionBar(myToolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);//设置toolbar代替actionbar
-
-        refreshListView();
-
-        initPopUpView();
-        if (super.isNightMode())
-            myToolbar.setNavigationIcon(getDrawable(R.drawable.ic_menu_white_24dp));
-        else myToolbar.setNavigationIcon(getDrawable(R.drawable.ic_menu_black_24dp)); // 三道杠
-
-        myToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPopUpView();//弹出菜单
-            }
-        });
-
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //从主页跳转到编辑笔记界面
-                Intent intent = new Intent(MainActivity.this, EditActivity.class);
-                intent.putExtra("mode", 4);//新建笔记
-                startActivityForResult(intent, 1);//传回结果
-                overridePendingTransition(R.anim.in_righttoleft, R.anim.out_righttoleft);
-            }
-        });
+        initView();
 
     }
+
+private void initView(){
+    btn = findViewById(R.id.floatingActionButton1);
+    listView = findViewById(R.id.listView);
+    myToolbar = findViewById(R.id.myToolbar);
+    adapter = new NoteAdapter(context, noteList);
+
+
+    BottomNavigationView BottomNavigation = (BottomNavigationView) findViewById(R.id.bottomNavigation);
+    BottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+    SharedPreferences.Editor editor = sharedPreferences.edit();
+    editor.putInt("curTag", 0);
+    if(!sharedPreferences.contains("reverseMode"))
+        editor.putBoolean("reverseMode", false);
+    editor.commit();
+
+
+    listView.setAdapter(adapter);
+    listView.setOnItemClickListener(this);
+    listView.setOnItemLongClickListener(ListViewLongClickListener);
+
+    myToolbar.setTitle("全部笔记");
+
+    setSupportActionBar(myToolbar);
+    getSupportActionBar().setHomeButtonEnabled(true);
+    getSupportActionBar().setDisplayHomeAsUpEnabled(true);//设置toolbar代替actionbar
+
+    refreshListView();
+
+    initPopUpView();
+    if (super.isNightMode())
+        myToolbar.setNavigationIcon(getDrawable(R.drawable.ic_menu_white_24dp));
+    else myToolbar.setNavigationIcon(getDrawable(R.drawable.ic_menu_black_24dp)); // 三道杠
+
+    myToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            showPopUpView();//弹出菜单
+        }
+    });
+
+    btn.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            //从主页跳转到编辑笔记界面
+            Intent intent = new Intent(MainActivity.this, EditActivity.class);
+            intent.putExtra("mode", 4);//新建笔记
+            startActivityForResult(intent, 1);//传回结果
+            overridePendingTransition(R.anim.in_righttoleft, R.anim.out_righttoleft);
+        }
+    });
+
+}
+
 
     @Override
     protected void needRefresh() {
@@ -661,7 +679,6 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
             return false;
         }
     };
-
 
 }
 

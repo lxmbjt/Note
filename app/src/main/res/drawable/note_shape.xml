@@ -10,7 +10,7 @@
 <!--  影子，使更立体  -->
     <item android:bottom="3dp">
         <shape android:shape="rectangle">
-            <solid android:color="?lvBackground"/>
+            <solid android:color="?attr/tvBackground"/>
             <corners android:radius="6dp"/>
         </shape>
 
