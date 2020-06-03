@@ -31,13 +31,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.appcompat.widget.Toolbar;
+import group3.sse.bupt.note.BaseActivity;
 import group3.sse.bupt.note.CRUD;
 import group3.sse.bupt.note.MainActivity;
 import group3.sse.bupt.note.Note;
 import group3.sse.bupt.note.R;
 
 
-public class PlanActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class PlanActivity extends BaseActivity implements AdapterView.OnItemClickListener {
 
     private PlanDatabase dbHepler;
 
@@ -389,5 +390,13 @@ public class PlanActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
-
+    @Override
+    protected void needRefresh() {
+        setNightMode();
+        Intent intent = new Intent(this, PlanActivity.class);
+        intent.putExtra("opMode", 10);
+        startActivity(intent);
+        overridePendingTransition(R.anim.night_switch, R.anim.night_switch_over);
+        finish();
+    }
 }

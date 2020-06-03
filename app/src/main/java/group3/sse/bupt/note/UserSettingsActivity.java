@@ -24,8 +24,7 @@ public class UserSettingsActivity extends BaseActivity {
 
         sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         Intent intent=getIntent();
-        if(intent.getExtras() != null) night_change = intent.getBooleanExtra("night_change", false);
-        else night_change = false;
+
         Log.d(TAG, "UserSetting onCreate: "+night_change);
 
         initView();
@@ -36,6 +35,18 @@ public class UserSettingsActivity extends BaseActivity {
 
         if(isNightMode())user_setting_toolbar.setNavigationIcon(getDrawable(R.drawable.ic_settings_white_24dp));
         else user_setting_toolbar.setNavigationIcon(getDrawable(R.drawable.ic_settings_black_24dp));
+        if(intent.getExtras() != null)
+        {night_change = intent.getBooleanExtra("night_change", false);
+            if(night_change==true){
+                Intent intent1=new Intent(this,MainActivity.class);
+                night_change=false;
+                startActivity(intent1);
+                overridePendingTransition(R.anim.night_switch, R.anim.night_switch_over);
+                finish();//结束之前的设置界面
+
+            }
+        }
+        else night_change = false;
     }
 
     public void initView(){

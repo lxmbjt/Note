@@ -169,7 +169,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemClic
         intent.putExtra("opMode", 10);
         startActivity(intent);
         overridePendingTransition(R.anim.night_switch, R.anim.night_switch_over);
-        if (popupWindow.isShowing()) popupWindow.dismiss();
+        popupWindow.dismiss();
         finish();
     }
 
